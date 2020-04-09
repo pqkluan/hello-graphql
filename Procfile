@@ -1,1 +1,1 @@
-web: node index.js
+web: NODE_ENV=production node --experimental-modules app.js
