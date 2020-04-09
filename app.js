@@ -3,6 +3,7 @@ import graphqlHTTP from "express-graphql";
 import cors from "cors";
 import mongoose from "mongoose";
 import compression from "compression";
+import helmet from "helmet";
 
 import schema from "./schema/schema.js";
 
