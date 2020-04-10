@@ -23,7 +23,7 @@ mongoose.connection.once("open", () => {
 const app = express();
 
 // Allow cross-origin request
-if (env === "dev") app.use(cors());
+app.use(cors());
 
 app.use(compression()); //Compress all routes
 
