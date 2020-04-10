@@ -7,7 +7,7 @@ import helmet from "helmet";
 
 import schema from "./schema/schema.js";
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 const env = process.env.NODE_ENV || "dev";
 
