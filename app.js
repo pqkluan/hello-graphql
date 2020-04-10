@@ -17,7 +17,7 @@ const mongoDB = process.env.MONGODB_URI || dev_db_url;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection.once("open", () => {
-  console.log("INFO: Connected to DB");
+  console.log("INFO: Connected to DB'");
 });
 
 const app = express();
