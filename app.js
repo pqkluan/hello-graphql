@@ -1,24 +1,22 @@
-import express from "express";
-import graphqlHTTP from "express-graphql";
-import cors from "cors";
-import mongoose from "mongoose";
-import compression from "compression";
-import helmet from "helmet";
+const express = require("express");
+const http = require("http");
+const graphqlHTTP = require("express-graphql");
+const cors = require("cors");
 
-import schema from "./schema/schema.js";
+const compression = require("compression");
+const helmet = require("helmet");
+
+const models = require("./db/models");
+const schema = require("./schema/index");
 
 const PORT = process.env.PORT || 4000;
 
-const env = process.env.NODE_ENV || "dev";
-
-const dev_db_url = `mongodb+srv://admin:admin@clusterfree-4nwij.mongodb.net/test?retryWrites=true&w=majority`;
-const mongoDB = process.env.MONGODB_URI || dev_db_url;
-
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
-
-mongoose.connection.once("open", () => {
-  console.log("INFO: Connected to DB'");
-});
+// const dev_db_url = `mongodb+srv://admin:admin@clusterfree-4nwij.mongodb.net/test?retryWrites=true&w=majority`;
+// const mongoDB = process.env.MONGODB_URI || dev_db_url;
+// mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connection.once("open", () => {
+//   console.log("INFO: Connected to MongoDB");
+// });
 
 const app = express();
 
@@ -38,6 +36,8 @@ app.use(
   })
 );
 
-app.listen(PORT, () => {
-  console.log(`INFO: Express started on port ${PORT}`);
+return models.sequelize.sync().then((result) => {
+  app.listen(PORT, () => {
+    console.log(`INFO: Express started on port ${PORT}`);
+  });
 });
