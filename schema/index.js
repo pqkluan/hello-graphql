@@ -1,28 +1,60 @@
-const graphql = require("graphql");
-
-const booksSchema = require("./books.js");
-
-const { GraphQLSchema, GraphQLObjectType } = graphql;
-
-const RootQuery = new GraphQLObjectType({
-  name: "RootQueryType",
-  fields() {
-    return {
-      ...booksSchema.queries(),
-    };
+module.exports = {
+  Query: {
+    book(root, args, context) {
+      const { id } = args;
+      return context.prisma.book({ id });
+    },
+    books(root, args, context) {
+      return context.prisma.books({});
+    },
+    author(root, args, context) {
+      const { id } = args;
+      return context.prisma.author({ id });
+    },
+    authors(root, args, context) {
+      return context.prisma.authors({});
+    },
   },
-});
+  Mutation: {
+    addAuthor(root, args, context) {
+      const { name, age } = args;
+      return context.prisma.createAuthor({ name, age });
+    },
+    updateAuthor(root, args, context) {
+      const { id, name, age } = args;
+      return context.prisma.updateAuthor({
+        where: { id },
+        data: { name, age },
+      });
+    },
+    addBook(root, args, context) {
+      const { authorId, name, genre } = args;
+      return context.prisma.createBook({
+        name,
+        genre,
+        author: { connect: { id: authorId } },
+      });
 
-const Mutation = new GraphQLObjectType({
-  name: "Mutation",
-  fields() {
-    return {
-      ...booksSchema.mutations(),
-    };
+      // return context.prisma.updatePost({
+      //   where: { id: args.postId },
+      //   data: { published: true },
+      // });
+    },
+    removeBook(root, args, context) {
+      const { id } = args;
+      return context.prisma.deleteBook({ id });
+    },
   },
-});
-
-module.exports = new GraphQLSchema({
-  query: RootQuery,
-  mutation: Mutation,
-});
+  Author: {
+    books(root, args, context) {
+      const { id } = root;
+      return context.prisma.author({ id }).books();
+    },
+  },
+  Book: {
+    author(root, args, context) {
+      const { id } = root;
+      return context.prisma.book({ id }).author();
+    },
+  },
+};

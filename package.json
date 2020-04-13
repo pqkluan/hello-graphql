@@ -7,15 +7,11 @@
     "node": "^12"
   },
   "scripts": {
-    "dev": "nodemon app",
-    "start": "NODE_ENV=production node app"
+    "dev": "nodemon index",
+    "start": "NODE_ENV=production node index"
   },
   "dependencies": {
-    "compression": "^1.7.4",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-graphql": "^0.9.0",
-    "graphql": "^15.0.0",
-    "helmet": "^3.22.0"
+    "graphql-yoga": "^1.18.3",
+    "prisma-client-lib": "^1.34.10"
   }
 }
