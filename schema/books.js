@@ -1,6 +1,9 @@
 const graphql = require("graphql");
+const Prisma = require("@prisma/client");
 
-// const models = require("../db/models");
+const { PrismaClient } = Prisma;
+
+const prisma = new PrismaClient();
 
 const {
   GraphQLObjectType,
@@ -21,9 +24,7 @@ const BookType = new GraphQLObjectType({
       author: {
         type: AuthorType,
         resolve(parent, args) {
-          return models.Author.findOne({
-            where: { id: parent.authorId },
-          });
+          return prisma.author.findOne({ where: { id: parent.authorId } });
         },
       },
     };
@@ -40,7 +41,7 @@ const AuthorType = new GraphQLObjectType({
       books: {
         type: new GraphQLList(BookType),
         resolve(parent, args) {
-          return models.Book.findAll({ where: { authorId: parent.id } });
+          return prisma.book.findMany({ where: { authorId: parent.id } });
         },
       },
     };
@@ -52,27 +53,27 @@ function queries() {
     books: {
       type: new GraphQLList(BookType),
       resolve() {
-        return models.Book.findAll({});
+        return prisma.book.findMany({});
       },
     },
     book: {
       type: BookType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return models.Book.findOne({ where: { id: args.id } });
+        return prisma.book.findOne({ where: { id: args.id } });
       },
     },
     authors: {
       type: new GraphQLList(AuthorType),
       resolve() {
-        return models.Author.findAll({});
+        return prisma.author.findMany({});
       },
     },
     author: {
       type: AuthorType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return models.Author.findOne({ where: { id: args.id } });
+        return prisma.author.findOne({ where: { id: args.id } });
       },
     },
   };
@@ -88,7 +89,7 @@ function mutations() {
       },
       resolve(parent, args) {
         const { name, age } = args;
-        return models.Author.create({ name, age });
+        return prisma.author.create({ data: { name, age } });
       },
     },
     addBook: {

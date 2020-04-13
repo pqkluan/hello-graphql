@@ -6,7 +6,6 @@ const cors = require("cors");
 const compression = require("compression");
 const helmet = require("helmet");
 
-const models = require("./db/models");
 const schema = require("./schema/index");
 
 const PORT = process.env.PORT || 4000;
@@ -36,8 +35,6 @@ app.use(
   })
 );
 
-return models.sequelize.sync().then((result) => {
-  app.listen(PORT, () => {
-    console.log(`INFO: Express started on port ${PORT}`);
-  });
+app.listen(PORT, () => {
+  console.log(`INFO: Express started on port ${PORT}`);
 });
