@@ -13,7 +13,7 @@ module.exports = {
     },
     authors(root, args, context) {
       return context.prisma.authors({});
-    },
+    }
   },
   Mutation: {
     addAuthor(root, args, context) {
@@ -24,7 +24,7 @@ module.exports = {
       const { id, name, age } = args;
       return context.prisma.updateAuthor({
         where: { id },
-        data: { name, age },
+        data: { name, age }
       });
     },
     addBook(root, args, context) {
@@ -32,7 +32,7 @@ module.exports = {
       return context.prisma.createBook({
         name,
         genre,
-        author: { connect: { id: authorId } },
+        author: { connect: { id: authorId } }
       });
 
       // return context.prisma.updatePost({
@@ -43,18 +43,18 @@ module.exports = {
     removeBook(root, args, context) {
       const { id } = args;
       return context.prisma.deleteBook({ id });
-    },
+    }
   },
   Author: {
     books(root, args, context) {
       const { id } = root;
       return context.prisma.author({ id }).books();
-    },
+    }
   },
   Book: {
     author(root, args, context) {
       const { id } = root;
       return context.prisma.book({ id }).author();
-    },
-  },
+    }
+  }
 };
